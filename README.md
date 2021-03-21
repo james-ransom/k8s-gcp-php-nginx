@@ -17,3 +17,8 @@ kubectl apply -f nginx_configMap.yaml
 ```
 http://[service external ip]/index.php
 ```
+
+## Expected results ## 
+```
+the demo has worked!
+```
