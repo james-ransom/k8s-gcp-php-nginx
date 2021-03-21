@@ -27,12 +27,12 @@ spec:
         - name: dir
           mountPath: /dir
       initContainers:
-      - name: install
+      - name: cleandir
         image: busybox
         volumeMounts:
         - name: dir
           mountPath: /dir
-        command: ['sh', '-c', "echo 'root folder, also go to /gitcheckout/index.php' > /dir/index.php"]      
+        command: ['sh', '-c', "rm -frv /dir/k8s-gcp-php-nginx && rm -frv /dir/html"]      
       - name: git-cloner
         image: alpine/git
         args:
@@ -40,7 +40,13 @@ spec:
             - --single-branch
             - --
             - https://github.com/james-ransom/k8s-gcp-php-nginx.git
-            - /dir/gitcheckout
+            - /dir/k8s-gcp-php-nginx
         volumeMounts:
         - mountPath: /dir
           name: dir
+      - name: installcode
+        image: busybox
+        volumeMounts:
+        - name: dir
+          mountPath: /dir
+        command: ['sh', '-c', "mkdir -p /dir/html && cp -v /dir/k8s-gcp-php-nginx/*.php /dir/html/"]    
